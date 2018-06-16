@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="space.js"></script>
+    <script src="code.js"></script>
+</head>
+<body>
+    <div id="te">
+    </div>
+    <script>
+        function log(title,data){
+            const res = `
+            ${JSON.stringify(data)}
+            `;
+            
+            const brEle = document.createElement('BR');
+            document.getElementById('te').append('==== html ====');
+            document.getElementById('te').append(brEle.cloneNode());
+            document.getElementById('te').append(title);
+            document.getElementById('te').append(brEle.cloneNode());
+            document.getElementById('te').append('==== res ====');
+            document.getElementById('te').append(brEle.cloneNode());
+            document.getElementById('te').append(res);
+            document.getElementById('te').append(brEle.cloneNode());
+            document.getElementById('te').append(brEle.cloneNode());
+        };
+
+        function main(cmd){
+            document.getElementById('te').innerHTML = '';
+            if (cmd) {
+                log(dat[cmd],parser(dat[cmd]));
+            } else {
+                log(dat['a'],parser(dat['a']));
+                log(dat['b'],parser(dat['b']));
+                log(dat['c'],parser(dat['c']));
+                log(dat['d'],parser(dat['d']));
+                log(dat['e'],parser(dat['e']));
+            }
+        }
+        main(cmd);
+    </script>
+</body>
+</html>
