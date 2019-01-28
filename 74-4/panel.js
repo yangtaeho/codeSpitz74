@@ -10,11 +10,17 @@ const Panel = class{
         const p = new Panel();
         return p.init(game, init(game), render), p;
     }
-    //람다를 통해서 이닛을 어떻게 할지를 넘겨 받아서 처리...
+    //위임 클래스 기법... 
+    //서브클래스를 받지 않고 init 할 때 
+    //람다를 받아서 이닛을 어떻게 할지를 넘겨 받아서 처리...
     //개별 수행하고 잇는 아ㅣ들의 행동만 제어하고 싶어서 함수를 인자로 받아서 ` 처리하고 있음.
+
+
+    // init 과 static get 의 인자가 init(game) 한 값은 base 여야 한다고  강제하고 있음.
     init(game, base, r){
         Object.assign(this, {game, base, r});
     }
+    //형적 안정화를 얻으면서.. 
     //렌더를 어떻게 할지를 외부에서 가져올 수 있도록 처리... 
     render(v){this.r(this.game, v);} //람다를 이용한 서브 클래싱★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
 };

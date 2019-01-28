@@ -1,25 +1,26 @@
-//임시 객체로 열거형을 만들고 실제 클래스 선언시 처리해줌.
 const s = {};
 'title,stageIntro,play,dead,stageClear,clear,ranking'.split(',').forEach(v=>s[v] = Symbol());
-//게임의 상태를 명확하게 표현해주게 함.
-const Game = class {
-    [s.title](){
-        this.stage.clear();
-        this.score.clear();
+//'title....생략'
+const Game = class{
+    constructor(base, col, row, ...v){
+        Object.assign(this, {base, col, row, state:{}, curr:'title', score:new Score, stage:new Stage});
+        let i = 0;
+        while(i < v.length) this.state[v[i++]] = Panel.get(this, v[i++], v[i++]);
     }
-    [s.stageIntro](){
-        this._render(this.stage.stage);
+    // 여기에서 받아온 state 를 통해 처리되기 떄문에  symbol 로 잔뜩 서술하는 것이 의미가 없다...
+    setState(state){
+        if(!Object.values(s).includes(state)) throw 'invalid'; //열거형을 통해서 이 메서드를 안정화 해줌...
+        this.curr = state;
+        const {state:{[this.curr]:{base:el}}} = this;
+        this.base.innerHTML = '';
+        this.base.appendChild(el); // 다음주에는 네이티브 객체 다 날려버릴거임...
+        el.style.display = 'block';
+        this[this.curr]();//현재 스테이트의 함수 호출...
     }
-    [s.play](){
-        const data = new Data(this.row, this.col);
-        //... //TODO 180131 다음 시간 6교시에 할 것!!!!
-        this._render(data);//update - 패널과 게임의 대화
-        this._render(Block.block());//next - 패널과 게임의 대화
+    _render(v){
+        const {state:{[this.curr]:base}} = this;
+        base.render(v);
     }
-    [s.dead](){}
-    [s.stageClear](){}
-    [s.clear](){}
-    [s.ranking](){}
 };
 //entries가 키밸류 쌍으로 분리해준 것을 게임에게 넣어줌. 
 Object.entries(s).forEach(([k,v])=>Game[k]=v);

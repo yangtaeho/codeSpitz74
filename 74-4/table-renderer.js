@@ -1,7 +1,7 @@
 const TableRenderer = (_=>{
     //앞으로 function 은 쓰지마...!
-    const el = el=>document.createElement(el);
-    //const add = (p, c)=> p.appendChild(typeof c => )//TODO
+    const el = v=>document.createElement(v);
+    const add = (p, c)=> p.appendChild(typeof c == 'string' ? el(c) : c);
     const back = (s, v)=>{s.backgroundColor = v;};
 
     //table renderer 테스트 언급... data.all 을 이용한 것..!..
@@ -17,20 +17,23 @@ const TableRenderer = (_=>{
             // 추상화가 있는 경우에는 추상화 계층간의 대화가 아주 중요하다...
 
             //자식이 부모의 서비스를 이용해 먹는 느낌의 코드 (Renderer 를 알아야 쓸 수 가 있다...)
-            base.style.cssText = style; //border 처리 등...
+            // base.style.cssText = style; //border 처리 등...
 
-            let i = row;
+            // let i = row;
+            let {row:i} = this;
             while(i--){
-                const tr = base.appendChild(el('tr')); // appendChild는 결과값으로 인자를 넘겨줌..
+                // const tr = base.appendChild(el('tr')); // appendChild는 결과값으로 인자를 넘겨줌..
+                const tr = add(base, 'tr');
                 const curr = [];
                 let j = col;
                 blocks.push(curr);
-                while(j--) curr.push(tr.appendChild(el('td')).style);
+                // while(j--) curr.push(tr.appendChild(el('td')).style);
+                while(j--) curr.push(add(tr, 'td').style);
 
                 // 도메인 지식이 난무한다... 즉... 이거 잘 아는 친구에게 위임 가능.... 이게 분리의 장점...
             }
-            document.body.appendChild(base);
-            console.log('append done'); //debug
+            // document.body.appendChild(base);
+            // console.log('append done'); //debug
         }
         clear(){
             this.blocks.forEach(curr=>curr.forEach(s=>back(s, this.back)));
@@ -42,4 +45,5 @@ const TableRenderer = (_=>{
             ));
         }
     };
+    return TableRenderer;
 })();
