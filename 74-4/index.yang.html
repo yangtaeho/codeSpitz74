@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>render</title>
+    <script src="stage.js"></script>
+    <script src="renderer.js"></script>
+    <script src="table-renderer.js"></script>
+    <script src="canvas-renderer.js"></script>
+    <script src="console-renderer.js"></script>
+    <script src="game.taeho.js"></script>
+
+</head>
+<body>
+</body>
+<script src="data-yang-demo.js"></script>
+<script>
+// 단순히 렌더링을 반복하는 TableRenderer 테스트 역할만 수행함.
+const set = {row: 12, col: 12, back: 'gray', style: "width:400px;height:300px;"};
+const main =_=>{
+    const {col, row, back, style} = set;
+    const renderer = new TableRenderer(col,row,back,style);
+    const game = new Game(renderer,row,col);
+    let isDone = false;
+    const end =_=>isDone = true;
+    game.start();
+
+    const tick = 1000/60 + 300;
+    let i = 0;
+    const onGameAreaInterval = setInterval( _=> {
+        if (isDone) {
+            clearInterval(onGameAreaInterval);
+            alert('종료되었습니다.');
+        }
+
+
+        // demo start
+        // if(!demos[i]){ end(); return false; }
+        // const data = new Data(row,col);
+        // data.all(...demos[i++]);
+        // demo end 
+
+        if(!demos[i]){ end(); return false; }
+        const data = new Data(row,col);
+        data.all(...demos[i++]);
+        // data.all(getPlayData());
+
+        
+        game.setData(data);
+        game.run();
+    }, tick);
+};
+main();
+</script>
+<!-- 18-01-31 스터디 추가 내용... 패널이 모든 걸 관장.. -->
+<!-- 별도 파일로 분리 -->
+</html>
